@@ -1,0 +1,10 @@
+groups:
+  - name: always_alerts
+    rules:
+      - alert: AlwaysActiveAlert
+        expr: vector(1)
+        labels:
+          severity: critical
+        annotations:
+          summary: "This is a test alert that is always active"
+          description: "This alert is designed to always be active as the condition is always true."

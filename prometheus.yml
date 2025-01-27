@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["149.202.43.107:9090"]
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["149.202.43.107:9093"]
+
+rule_files:
+  - "alert_rules.yml"
