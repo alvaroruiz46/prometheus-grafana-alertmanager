@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   prometheus:
     image: prom/prometheus:v2.52.0-rc.1
@@ -5,8 +7,8 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - /home/debian/stacks/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - /home/debian/stacks/prometheus/alert_rules.yml:/etc/prometheus/alert_rules.yml
+      - /root/repositorios/prometheus-grafana-alertmanager/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /root/repositorios/prometheus-grafana-alertmanager/alert_rules.yml:/etc/prometheus/alert_rules.yml
       - prometheus_data:/prometheus
     networks:
       - monitoring
@@ -29,7 +31,19 @@ services:
     ports:
       - "9093:9093"
     volumes:
-      - /home/debian/stacks/prometheus/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - /root/repositorios/prometheus-grafana-alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    networks:
+      - monitoring
+
+  discord-alerts:
+    image: benjojo/discord-alertmanager:latest
+    container_name: discord-alerts
+    environment:
+      - DISCORD_WEBHOOK="https://discord.com/api/webhooks/1333528482583679110/_owHuy07asC6PgQ4js_IQb1_ZQElSfdCgTKYmuLBU_e3LHg13iyE0J_oKpwa9FNc0zQx"
+    ports:
+      - "9094:9094" # Opcional, puedes cambiarlo o eliminarlo si no necesitas exponerlo
+    depends_on:
+      - alertmanager
     networks:
       - monitoring
 
